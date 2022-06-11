@@ -7,8 +7,6 @@
 
 ## Start/Create
 
-### Create the Resource Group
-
 ```powershell
 az group create --name game-servers --location centralus
 az deployment group create --resource-group game-servers --template-file ./factorio.bicep --parameters location=centralus

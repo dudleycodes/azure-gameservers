@@ -73,6 +73,7 @@ resource generateRconPassword 'Microsoft.Resources/deploymentScripts@2020-10-01'
   }
 }
 
+@description('Contains the port mappings for the Factorio server.')
 var gamePorts = empty(rconPass) ? [
   {
     port: 34197
@@ -97,7 +98,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
   properties: {
     containers: [
       {
-        name: 'factorio-${gameName}-srv'
+        name: 'factorio-server-${gameName}'
         properties: {
           image: 'factoriotools/factorio:${factorioVersion}'
           environmentVariables:[
