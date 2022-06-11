@@ -33,5 +33,4 @@ az group delete -y --name game-servers
 
 ## TODOs
 
-- If no RCON password parameter is set, don't map TCP port 27015.
 - Split into bicep modules.

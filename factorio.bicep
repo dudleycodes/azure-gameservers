@@ -20,7 +20,7 @@ param factorioVersion string = 'stable'
 
 var storageAccountName = 'gameservers${uniqueString(resourceGroup().id)}'
 
-@description('Storage Account for all Game Serverrs')
+@description('Storage Account for all Game Servers')
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: storageAccountName
   location: location
@@ -73,6 +73,23 @@ resource generateRconPassword 'Microsoft.Resources/deploymentScripts@2020-10-01'
   }
 }
 
+var gamePorts = empty(rconPass) ? [
+  {
+    port: 34197
+    protocol: 'UDP'
+  }
+] : [
+  {
+    port: 27015
+    protocol: 'TCP'
+  }
+  {
+    port: 34197
+    protocol: 'UDP'
+  }
+]
+
+
 @description('Factorio Server for Game via Container Instances')
 resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01' = {
   name: 'factorio-${gameName}'
@@ -93,16 +110,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
               value: 'save-${gameName}'
             }
           ]
-          ports: [
-            {
-              port: 27015
-              protocol: 'TCP'
-            }
-            {
-              port: 34197
-              protocol: 'UDP'
-            }
-          ]
+          ports: gamePorts
           resources: {
             requests: {
               cpu: cpuCores
@@ -123,16 +131,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
     restartPolicy: 'OnFailure'
     ipAddress: {
       type: 'Public'
-      ports: [
-        {
-          port: 27015
-          protocol: 'TCP'
-        }
-        {
-          port: 34197
-          protocol: 'UDP'
-        }
-      ]
+      ports: gamePorts
     }
     volumes: [
       {
@@ -147,6 +146,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
     ]
   }
 }
+
 
 output containerIPv4Address string = containerGroup.properties.ipAddress.ip
 output rcon string = rconPass
