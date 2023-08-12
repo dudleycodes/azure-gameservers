@@ -34,17 +34,16 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   }
 }
 
-/*
-//For future use, in splitting bicep files apart
-
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing = {
-  name: storageAccountName
+@description('File Share for all Game Servers')
+resource fileServices 'Microsoft.Storage/storageAccounts/fileServices@2021-09-01' existing = {
+  parent: storageAccount
+  name: 'default'
 }
-//*/
 
 @description('File Share for Project Zomboid Game')
 resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-09-01' = {
-  name: '${storageAccount.name}/default/pzomboid-${gameName}'
+  parent: fileServices
+  name: 'pzomboid-${gameName}'
   properties: {
     shareQuota: 1
   }
@@ -61,7 +60,6 @@ var gamePorts = [
     protocol: 'UDP'
   }
 ]
-
 
 @description('Project Zomboid Server for Game via Container Instances')
 resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01' = {
@@ -85,7 +83,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
           volumeMounts: [
             {
                 name: 'savedata'
-                mountPath: '/app/Zomboid/Saves/Multiplayer/${gameName}'
+                mountPath: '/app/Zomboid/'
                 readOnly: false
             }
           ]
