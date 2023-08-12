@@ -1,13 +1,13 @@
 @description('The number of CPU cores to allocate to the Factorio server (in vCPUs).')
-param cpuCores int = 1
+param cpuCores int = 4
 
 @description('The amount of memory to allocate to the Factorio server (in GB).')
-param memoryInGb int = 1
+param memoryInGb int = 4
 
 @description('The name of the game - should be unique for different Factorio games.')
 @minLength(4)
-@maxLength(10)
-param gameName string = 'freeplay'
+@maxLength(12)
+param gameName string
 
 @description('The RCON password for the Factorio server (optional).')
 param rconPass string = ''
