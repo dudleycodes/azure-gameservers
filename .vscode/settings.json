@@ -1,10 +1,26 @@
 {
     "cSpell.words": [
         "centralus",
+        "colonysurvival",
         "Factorio",
         "freeplay",
+        "gamenite",
         "pzomboid",
         "RCON",
+        "valheim",
         "Zomboid"
-    ]
+    ],
+    "markdownlint.ignore": [
+        ".gitkeep", "LICENSE"
+    ],
+    "terminal.integrated.scrollback": 2500,
+    "[markdown]": {
+        "cSpell.fixSpellingWithRenameProvider": true,
+        "cSpell.advanced.feature.useReferenceProviderWithRename": true,
+        "cSpell.advanced.feature.useReferenceProviderRemove": "/^#+\\s/",
+        "editor.rulers": [120],
+        "editor.unicodeHighlight.ambiguousCharacters": true,
+        "editor.unicodeHighlight.invisibleCharacters": true,
+        "editor.wordWrap": "on"
+    }
 }
